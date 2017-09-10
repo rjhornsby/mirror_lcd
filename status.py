@@ -77,10 +77,15 @@ class NIC:
 
     def show_wifi(self):
         self._clear_display()
+        status = NIC.get_wifi_status()
         with self.lock:
             self.display.lcd_display_string('wifi:' + NIC.get_wifi_ip_address(), 1)
-            self.display.lcd_display_string('ssid: ', 2)
-            self.display.lcd_display_string(' ' + NIC.get_wifi_status()['ssid'], 3)
+            if 'ssid' in status:
+                self.display.lcd_display_string('SSID:', 2)
+                self.display.lcd_display_string(status['ssid'][:19], 3)
+            else:
+                self.display.lcd_display_string('SSID scan error: not', 2)
+                self.display.lcd_display_string('found or bad passwd', 3)
 
     @staticmethod
     def get_ip_address(iface):
