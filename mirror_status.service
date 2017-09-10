@@ -1,0 +1,10 @@
+[Unit]
+Description=Mirror Network Status
+
+[Service]
+ExecStart=/home/pi/mirror_lcd/status.py
+StandardOutput=null
+
+[Install]
+WantedBy=multi-user.target
+Alias=mirror_status.service
