@@ -82,7 +82,7 @@ class NIC:
             self.display.lcd_display_string('wifi:' + NIC.get_wifi_ip_address(), 1)
             if 'ssid' in status:
                 self.display.lcd_display_string('SSID:', 2)
-                self.display.lcd_display_string(status['ssid'][:19], 3)
+                self.display.lcd_display_string(status['ssid'][:20], 3)
             else:
                 self.display.lcd_display_string('SSID scan error: not', 2)
                 self.display.lcd_display_string('found or bad passwd', 3)
@@ -107,13 +107,16 @@ class NIC:
 
     @staticmethod
     def get_wifi_status():
-        stdout = subprocess.check_output(['/sbin/wpa_cli', '-i', 'wlan0', 'status'], universal_newlines=True)
         status = {}
-        lines = stdout.splitlines()
-        for line in lines:
-            key, value = line.split('=', 1)
-            status[key] = value
-        return status
+        try:
+            stdout = subprocess.check_output(['/sbin/wpa_cli', '-i', 'wlan0', 'status'], universal_newlines=True)
+
+            lines = stdout.splitlines()
+            for line in lines:
+                key, value = line.split('=', 1)
+                status[key] = value
+        finally:
+            return status
 
 
 def main(argv):
