@@ -2,8 +2,11 @@
 Description=Mirror Network Status
 
 [Service]
+User=pi
+Group=pi
 ExecStart=/home/pi/mirror_lcd/status.py
-StandardOutput=null
+StandardOutput=journal
+StandardError=journal
 
 [Install]
 WantedBy=multi-user.target
